@@ -4,7 +4,7 @@ const Product = require('../models/Product');
 exports.getUserOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user.id }) // auth middleware gán user.id
-      .populate('items.productId') // đảm bảo populate đúng
+      .populate('items.productId') 
       .sort({ createdAt: -1 });
 
     res.json(orders);

@@ -6,7 +6,6 @@ const cors = require('cors');
 dotenv.config();
 const app = express();
 
-// Middlewares
 // app.use(cors());
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -38,8 +37,6 @@ app.get('/', (req, res) => {
 
 // Connect DB
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
 }).then(() => console.log(' MongoDB connected'))
   .catch(err => console.error(' MongoDB connection error:', err));
 
