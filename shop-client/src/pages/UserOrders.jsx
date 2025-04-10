@@ -14,7 +14,7 @@ function UserOrders() {
             Authorization: `Bearer ${token}`,
           },
         });
-        setOrders(res.data);
+        setOrders(res.data.data);
       } catch (err) {
         alert('Không thể tải đơn hàng');
         console.error(err);

@@ -14,21 +14,12 @@ app.use(cors({
 
 app.use(express.json());
 
-const authRoutes = require('./routes/auth');
-app.use('/api/auth', authRoutes);
-
-const productRoutes = require('./routes/product');
-app.use('/api/products', productRoutes);
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/products", require("./routes/product"));
+app.use("/api/categories", require("./routes/category"));
+app.use("/api/users", require("./routes/user"));
+app.use("/api/orders", require("./routes/order"));
 app.use('/uploads', express.static('uploads'));
-
-const categoryRoutes = require('./routes/category');
-app.use('/api/categories', categoryRoutes);
-
-const userRoutes = require('./routes/user');
-app.use('/api/users', userRoutes);
-
-const orderRoutes = require('./routes/order');
-app.use('/api/orders', orderRoutes);
 
 // Sample route
 app.get('/', (req, res) => {

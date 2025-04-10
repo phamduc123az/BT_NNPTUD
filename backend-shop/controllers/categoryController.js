@@ -1,50 +1,30 @@
 const Category = require('../models/Category');
 
-exports.getAllCategories = async (req, res) => {
-  try {
-    const categories = await Category.find();
-    res.json(categories);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+module.exports = {
+  GetAllCategories: async function () {
+    return await Category.find();
+  },
 
-exports.getCategoryById = async (req, res) => {
-  try {
-    const category = await Category.findById(req.params.id);
-    if (!category) return res.status(404).json({ message: 'Không tìm thấy danh mục' });
-    res.json(category);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+  GetCategoryById: async function (id) {
+    const category = await Category.findById(id);
+    if (!category) throw new Error('Không tìm thấy danh mục');
+    return category;
+  },
 
-exports.createCategory = async (req, res) => {
-  try {
-    const category = new Category(req.body);
-    await category.save();
-    res.status(201).json(category);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+  CreateCategory: async function (data) {
+    const category = new Category(data);
+    return await category.save();
+  },
 
-exports.updateCategory = async (req, res) => {
-  try {
-    const category = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!category) return res.status(404).json({ message: 'Không tìm thấy danh mục' });
-    res.json(category);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+  UpdateCategory: async function (id, data) {
+    const category = await Category.findByIdAndUpdate(id, data, { new: true });
+    if (!category) throw new Error('Không tìm thấy danh mục');
+    return category;
+  },
 
-exports.deleteCategory = async (req, res) => {
-  try {
-    const category = await Category.findByIdAndDelete(req.params.id);
-    if (!category) return res.status(404).json({ message: 'Không tìm thấy danh mục' });
-    res.json({ message: 'Xoá danh mục thành công' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  DeleteCategory: async function (id) {
+    const category = await Category.findByIdAndDelete(id);
+    if (!category) throw new Error('Không tìm thấy danh mục');
+    return { message: 'Xoá danh mục thành công' };
   }
 };

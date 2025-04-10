@@ -3,7 +3,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({
+     email: '', 
+     password: '' 
+    });
   const navigate = useNavigate();
 
   const handleChange = e => {

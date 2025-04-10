@@ -6,8 +6,14 @@ function Home() {
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/products')
-      .then(res => setProducts(res.data))
+      // .then(res => setProducts(res.data))
+      // .catch(err => console.error(err));
+      .then(res => {
+        console.log('API response:', res.data); 
+        setProducts(res.data.data);
+      })
       .catch(err => console.error(err));
+      // moi sua 
   }, []);
 
   const handleAddToCart = (product) => {
@@ -21,7 +27,7 @@ function Home() {
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert('✅ Đã thêm vào giỏ hàng!');
+    alert('Đã thêm vào giỏ hàng!');
   };
 
   return (
@@ -42,6 +48,8 @@ function Home() {
                 <p className="card-text text-danger fw-bold">
                   {product.price.toLocaleString()} VNĐ
                 </p>
+                <p className="card-title">Mô tả : {product.description}</p>
+
                 <button
                   className="btn btn-primary mt-auto"
                   onClick={() => handleAddToCart(product)}

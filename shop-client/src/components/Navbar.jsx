@@ -34,6 +34,16 @@ function Navbar() {
           <ul className="navbar-nav ms-auto align-items-lg-center">
             {token ? (
               <>
+              <li className="nav-item">
+                  <Link className="nav-link" to="/admin/products/">
+                    Quản lý sản phẩm
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/admin/categories">
+                  Quản lý danh mục
+                  </Link>
+                </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/cart">
                     Giỏ hàng

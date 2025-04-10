@@ -16,7 +16,7 @@ function AdminCategories() {
   const fetchCategories = async () => {
     try {
       const res = await axios.get(CATEGORY_API);
-      setCategories(res.data);
+      setCategories(res.data.data);
     } catch (err) {
       console.error('Lỗi khi lấy danh mục:', err);
     }

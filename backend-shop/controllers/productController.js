@@ -1,54 +1,36 @@
 const Product = require('../models/Product');
 
-exports.getAllProducts = async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+module.exports = {
+  GetAllProducts: async function () {
+    return await Product.find();
+  },
 
-exports.getProductById = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
-    res.json(product);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+  GetProductById: async function (id) {
+    const product = await Product.findById(id);
+    if (!product) throw new Error('Không tìm thấy sản phẩm');
+    return product;
+  },
 
-exports.createProduct = async (req, res) => {
-  try {
-    const { name, description, price, category } = req.body;
-    const image = req.file ? req.file.filename : '';
+  CreateProduct: async function (data, file) {
+    const { name, description, price, category } = data;
+    const image = file ? file.filename : '';
     const product = new Product({ name, description, price, image, category });
-    await product.save();
-    res.status(201).json(product);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+    return await product.save();
+  },
 
-exports.updateProduct = async (req, res) => {
-  try {
-    const update = req.body;
-    if (req.file) update.image = req.file.filename;
-    const product = await Product.findByIdAndUpdate(req.params.id, update, { new: true });
-    if (!product) return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
-    res.json(product);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+  UpdateProduct: async function (id, data, file) {
+    if (file) data.image = file.filename;
+    if (data.price) data.price = Number(data.price);
+    console.log("Update data:", data);
+    const product = await Product.findByIdAndUpdate(id, data, { new: true });
+    if (!product) throw new Error('Không tìm thấy sản phẩm');
+    console.log("Updated product:", product); // kiểm tra dữ liệu trả về
+    return product;
+  },
 
-exports.deleteProduct = async (req, res) => {
-  try {
-    const product = await Product.findByIdAndDelete(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
-    res.json({ message: 'Xoá thành công' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  DeleteProduct: async function (id) {
+    const product = await Product.findByIdAndDelete(id);
+    if (!product) throw new Error('Không tìm thấy sản phẩm');
+    return { message: 'Xoá thành công' };
   }
 };

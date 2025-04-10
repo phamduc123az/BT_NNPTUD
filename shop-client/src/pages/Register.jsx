@@ -3,11 +3,16 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Register() {
-  const [form, setForm] = useState({ username: '', email: '', password: '' });
+  const [form, setForm] = useState({
+    username: '',
+    email: '', 
+    password: '' 
+  });
   const navigate = useNavigate();
 
   const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({ ...form,
+       [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async e => {

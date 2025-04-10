@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+// import { useCart } from '../context/CartContext';
 
 function Cart() {
   const [cart, setCart] = useState([]);
+  // const { cart, removeFromCart, clearCart } = useCart();
 
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
@@ -35,6 +37,7 @@ function Cart() {
       alert(' Đặt hàng thành công!');
       localStorage.removeItem('cart');
       setCart([]);
+      // clearCart();
     } catch (error) {
       console.error(error);
       alert(' Đặt hàng thất bại!');
@@ -64,6 +67,7 @@ function Cart() {
                     Giá: {item.price.toLocaleString()} VNĐ
                   </p>
                   <p className="card-text">Số lượng: {item.quantity || 1}</p>
+                  {/* <button className="btn btn-sm btn-danger"onClick={() => removeFromCart(item._id)}> Xoá</button> */}
                 </div>
               </div>
             </div>

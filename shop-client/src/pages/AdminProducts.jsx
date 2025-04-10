@@ -7,7 +7,13 @@ const CATEGORY_API = 'http://localhost:5000/api/categories';
 function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [form, setForm] = useState({ name: '', price: '', category: '', image: null });
+  const [form, setForm] = useState({ 
+    name: '', 
+    price: '', 
+    category: '', 
+    image: null ,
+    description :''
+  });
   const [editId, setEditId] = useState(null);
 
   const token = localStorage.getItem('token');
@@ -19,13 +25,27 @@ function AdminProducts() {
 
   const fetchProducts = async () => {
     const res = await axios.get(API);
-    setProducts(res.data);
+    // setProducts(res.data);
+    setProducts(res.data.data);
   };
 
+  // const fetchCategories = async () => {
+  //   const res = await axios.get(CATEGORY_API);
+  //   // setCategories(res.data);
+  //   setCategories(res.data.data);
+  // };
+
   const fetchCategories = async () => {
-    const res = await axios.get(CATEGORY_API);
-    setCategories(res.data);
+    try {
+      const res = await axios.get(CATEGORY_API);
+      console.log('Categories:', res.data);
+      setCategories(Array.isArray(res.data.data) ? res.data.data : []);
+    } catch (err) {
+      console.error('Lỗi khi lấy danh mục:', err);
+      setCategories([]); // fallback
+    }
   };
+  
 
   const handleChange = e => {
     const { name, value, files } = e.target;
@@ -52,7 +72,13 @@ function AdminProducts() {
       } else {
         await axios.post(API, formData, config);
       }
-      setForm({ name: '', price: '', category: '', image: null });
+      setForm({ 
+        name: '',
+        price: '', 
+        category: '', 
+        image: null ,
+        description:''
+      });
       fetchProducts();
     } catch (err) {
       alert('Lỗi khi thêm/sửa sản phẩm');
@@ -67,6 +93,7 @@ function AdminProducts() {
       price: product.price,
       category: product.category,
       image: null,
+      description:product.description,
     });
   };
 
@@ -97,7 +124,8 @@ function AdminProducts() {
           <label className="form-label">Danh mục</label>
           <select className="form-select" name="category" value={form.category} onChange={handleChange} required>
             <option value="">-- Chọn danh mục --</option>
-            {categories.map(cat => (
+            {/* {categories.map(cat => ( */}
+            {Array.isArray(categories) && categories.map(cat => (
               <option key={cat._id} value={cat.name}>
                 {cat.name}
               </option>
@@ -108,6 +136,11 @@ function AdminProducts() {
         <div className="col-md-6">
           <label className="form-label">Hình ảnh</label>
           <input className="form-control" type="file" name="image" onChange={handleChange} accept="image/*" />
+        </div>
+
+        <div className="col-md-6">
+          <label className="form-label">Mô tả</label>
+          <input className="form-control" name="description" value={form.description} onChange={handleChange}  />
         </div>
 
         <div className="col-12 d-flex justify-content-end">

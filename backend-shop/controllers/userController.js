@@ -1,39 +1,22 @@
 const User = require('../models/User');
 
-exports.getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find().select('-password');
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+module.exports = {
+  GetAllUsers: async function () {
+    return await User.find().select('-password');
+  },
+
+  GetUserById: async function (id) {
+    const user = await User.findById(id).select('-password');
+    if (!user) throw new Error('Không tìm thấy người dùng');
+    return user;
+  },
+
+  UpdateUserRole: async function (id, role) {
+    return await User.findByIdAndUpdate(id, { role }, { new: true });
+  },
+
+  DeleteUser: async function (id) {
+    return await User.findByIdAndDelete(id);
   }
 };
 
-exports.getUserById = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).select('-password');
-    if (!user) return res.status(404).json({ message: 'Không tìm thấy người dùng' });
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-exports.updateUserRole = async (req, res) => {
-  try {
-    const { role } = req.body;
-    const user = await User.findByIdAndUpdate(req.params.id, { role }, { new: true });
-    res.json({ message: 'Cập nhật role thành công', user });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-exports.deleteUser = async (req, res) => {
-  try {
-    await User.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Xoá người dùng thành công' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
