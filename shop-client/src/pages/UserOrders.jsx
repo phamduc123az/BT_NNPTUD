@@ -29,7 +29,8 @@ function UserOrders() {
       {orders.length === 0 ? (
         <p>Chưa có đơn hàng nào.</p>
       ) : (
-        orders.map((order, idx) => (
+        // orders.map((order, idx) => (
+          orders.slice().reverse().map((order, idx) => (
           <div key={order._id} style={{ border: '1px solid gray', padding: 10, marginBottom: 10 }}>
             <h4>Đơn #{idx + 1} - Tổng tiền:  {order.totalAmount?.toLocaleString()} VNĐ</h4>
            
@@ -50,3 +51,4 @@ function UserOrders() {
 }
 
 export default UserOrders;
+

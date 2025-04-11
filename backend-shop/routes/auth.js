@@ -17,6 +17,7 @@ router.post('/login', async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const result = await authController.Login(email, password);
+    // res.json(result);
     CreateSuccessRes(res, result, 200);
   } catch (error) {
     next(error);

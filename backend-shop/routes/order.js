@@ -1,17 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const orderController = require('../controllers/orderController');
+let userController = require('../controllers/userController')
 const { CreateSuccessRes } = require('../utils/responseHandler');
+let { check_authentication } = require('../utils/check_auth')
 
-// // Lấy đơn hàng người dùng (cần middleware gán req.user)
-// router.get('/my', async (req, res, next) => {
-//   try {
-//     const orders = await orderController.GetUserOrders(req.user.id);
-//     CreateSuccessRes(res, orders, 200);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+router.get('/', check_authentication, async (req, res, next) => {
+  try {
+    // const orders = await orderController.GetUserOrders(req.user._id);
+    const orders = await orderController.GetUserOrders(req.userid);
+    CreateSuccessRes(res, orders, 200);
+  } catch (error) {
+    next(error);
+  }
+});
 
 // Lấy tất cả đơn hàng
 router.get('/', async (req, res, next) => {
